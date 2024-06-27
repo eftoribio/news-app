@@ -51,7 +51,7 @@ st.set_page_config(layout="wide")
 my_page = st.sidebar.radio('Page Navigation',
                            ['About the data', 'Interactive highlights', 
                             'News summarization', 
-                            # 'Sentiment-based recommendations',
+                            'Sentiment-based recommendations',
                             'Keyword extraction'])
 
 if my_page == 'About the data':
