@@ -190,43 +190,43 @@ elif my_page == 'News summarization':
         st.subheader('Article content')
         st.write(article['paragraph'])
 
-# elif my_page == 'Sentiment-based recommendations':
-#     st.title('Recommending articles based on predicted sentiments')
-#     df = pd.read_csv("data/schools-sentiment-labeled.csv").sort_values(
-#         'date', ascending=False
-#     )
+elif my_page == 'Sentiment-based recommendations':
+    st.title('Recommending articles based on predicted sentiments')
+    df = pd.read_csv("data/investopedia_cleaned.csv").sort_values(
+        'date', ascending=False
+    )
     
-#     title = st.selectbox(
-#         'Select article title', df['title'], index=None
-#     )
+    title = st.selectbox(
+        'Select article title', df['title'], index=None
+    )
     
-#     if title:
-#         article = df[df['title']==title].iloc[0]
+    if title:
+        article = df[df['title']==title].iloc[0]
                            
-#         col1, col2 = st.columns([3,1])
-#         col1.header(f"[{article['title']}]({article['link']})")
-#         col1.caption(f"__Published date:__ {article['date']}")
+        col1, col2 = st.columns([3,1])
+        col1.header(f"[{article['title']}]({article['link']})")
+        col1.caption(f"__Published date:__ {article['date']}")
         
-#         clf = ZeroShotGPTClassifier(model="gpt-3.5-turbo")
-#         clf.fit(None, ["Positive", "Negative", "Neutral"])
-#         article_sentiment = clf.predict([article['paragraph']])[0]
+        clf = ZeroShotGPTClassifier(model="gpt-3.5-turbo")
+        clf.fit(None, ["Positive", "Negative", "Neutral"])
+        article_sentiment = clf.predict([article['paragraph']])[0]
         
-#         if article_sentiment == 'Positive':
-#             col1.success(f'This article is **{article_sentiment.upper()}** based on the article content.')
-#         elif article_sentiment == 'Negative':
-#             col1.error(f'This article is **{article_sentiment.upper()}** based on the article content.')
-#         elif article_sentiment == 'Neutral':
-#             col1.info(f'This article is **{article_sentiment.upper()}** based on the article content.')
+        if article_sentiment == 'Positive':
+            col1.success(f'This article is **{article_sentiment.upper()}** based on the article content.')
+        elif article_sentiment == 'Negative':
+            col1.error(f'This article is **{article_sentiment.upper()}** based on the article content.')
+        elif article_sentiment == 'Neutral':
+            col1.info(f'This article is **{article_sentiment.upper()}** based on the article content.')
 
-#         col1.subheader('Full article content')
-#         col1.write(article['paragraph'])
+        col1.subheader('Full article content')
+        col1.write(article['paragraph'])
               
-#         col2.caption('**SUGGESTED STORIES**')
-#         suggestions = df[df['gpt_sentiment']==article_sentiment].sample(3)
+        col2.caption('**SUGGESTED STORIES**')
+        suggestions = df[df['gpt_sentiment']==article_sentiment].sample(3)
         
-#         for i, suggestion in suggestions.iterrows():
-#             col2.subheader(f"{suggestion['title']}")
-#             col2.write(f"[Link to the article]({suggestion['link']})")
+        for i, suggestion in suggestions.iterrows():
+            col2.subheader(f"{suggestion['title']}")
+            col2.write(f"[Link to the article]({suggestion['link']})")
 
 elif my_page == 'Keyword extraction':
     st.title('Tagging articles with their most relevant keywords')
