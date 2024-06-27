@@ -75,7 +75,7 @@ if my_page == 'About the data':
 
     plt.xlabel('date')
     plt.ylabel('count of articles')
-    plt.title('Daily Volume of Investopedia Articles, 2024Q1', fontsize=16)
+    plt.title('Daily Volume of Investopedia Articles', fontsize=16)
 
     st.pyplot(fig)
     
