@@ -55,15 +55,15 @@ my_page = st.sidebar.radio('Page Navigation',
                             'Keyword extraction'])
 
 if my_page == 'About the data':
-    st.title("Insight Out: A Rappler News Exploration App")
-    st.markdown("This Streamlit app provides comprehensive analysis and exploration of the latest Rappler news data. Designed for **Eskwelabs Data Science Fellowship Cohort 13.**")
+    st.title("Insight Out: A Investopedia News Exploration App")
+    st.markdown("This Streamlit app provides comprehensive analysis and exploration of the latest Investopedia news data. Designed for **Eskwelabs Data Science Fellowship Cohort 13.**")
 
     st.header("Preview of the dataset")
 
-    df = pd.read_csv("data/rappler-2024-cleaned-st.csv")
+    df = pd.read_csv("data/investopedia_cleaned.csv")
     st.write(df.head())
 
-    st.header("Quick stats from Rappler news articles")
+    st.header("Quick stats from Investopedia news articles")
 
     fig = plt.figure(figsize=(10, 6))
 
@@ -75,13 +75,13 @@ if my_page == 'About the data':
 
     plt.xlabel('date')
     plt.ylabel('count of articles')
-    plt.title('Daily Volume of Rappler Articles, 2024Q1', fontsize=16)
+    plt.title('Daily Volume of Investopedia Articles, 2024Q1', fontsize=16)
 
     st.pyplot(fig)
     
 elif my_page == 'Interactive highlights':
-    st.title('Interacting with the Rappler dataset')
-    df = pd.read_csv("data/rappler-2024-cleaned-st.csv")
+    st.title('Interacting with the Investopedia dataset')
+    df = pd.read_csv("data/investopedia_cleaned.csv")
 
     # Add text input for filter to specific keywords
     keywords = st.text_input(
@@ -120,7 +120,7 @@ elif my_page == 'Interactive highlights':
         # Add bar plot for top bigrams from filtered data
         st.header('Top bigrams from the filtered dataset')
         
-        content = df['content.cleaned'].str.cat(sep=' ')
+        content = df['paragraph'].str.cat(sep=' ')
         tokens = word_tokenize(content)
         tokens = [word.lower() for word in tokens
                   if word not in stopwords.words('english')
@@ -148,19 +148,19 @@ elif my_page == 'Interactive highlights':
         st.pyplot(fig)
 
 elif my_page == 'News summarization':
-    st.title('Summarizing Rappler articles')
-    df = pd.read_csv("data/rappler-2024-cleaned-st.csv").sort_values(
+    st.title('Summarizing Investopedia articles')
+    df = pd.read_csv("data/investopedia_cleaned.csv").sort_values(
         'date', ascending=False
     )
     
     title = st.selectbox(
-        'Select article title', df['title.cleaned'], index=None
+        'Select article title', df['title'], index=None
     )
     
     if title:
-        article = df[df['title.cleaned']==title].iloc[0]
+        article = df[df['title']==title].iloc[0]
            
-        st.header(f"[{article['title.cleaned']}]({article['link']})")
+        st.header(f"[{article['title']}]({article['link']})")
         st.caption(f"__Published date:__ {article['date']}")
                 
         col1, col2 = st.columns([3,1])
@@ -184,68 +184,68 @@ elif my_page == 'News summarization':
         
         if summary_button:
             st.subheader('Summary')
-            article_summary = s.fit_transform([article['content.cleaned']])[0]
+            article_summary = s.fit_transform([article['paragraph']])[0]
             st.write(article_summary)
         
         st.subheader('Article content')
-        st.write(article['content.cleaned'])
+        st.write(article['paragraph'])
 
-elif my_page == 'Sentiment-based recommendations':
-    st.title('Recommending articles based on predicted sentiments')
-    df = pd.read_csv("data/schools-sentiment-labeled.csv").sort_values(
-        'date', ascending=False
-    )
+# elif my_page == 'Sentiment-based recommendations':
+#     st.title('Recommending articles based on predicted sentiments')
+#     df = pd.read_csv("data/schools-sentiment-labeled.csv").sort_values(
+#         'date', ascending=False
+#     )
     
-    title = st.selectbox(
-        'Select article title', df['title.cleaned'], index=None
-    )
+#     title = st.selectbox(
+#         'Select article title', df['title'], index=None
+#     )
     
-    if title:
-        article = df[df['title.cleaned']==title].iloc[0]
+#     if title:
+#         article = df[df['title']==title].iloc[0]
                            
-        col1, col2 = st.columns([3,1])
-        col1.header(f"[{article['title.cleaned']}]({article['link']})")
-        col1.caption(f"__Published date:__ {article['date']}")
+#         col1, col2 = st.columns([3,1])
+#         col1.header(f"[{article['title']}]({article['link']})")
+#         col1.caption(f"__Published date:__ {article['date']}")
         
-        clf = ZeroShotGPTClassifier(model="gpt-3.5-turbo")
-        clf.fit(None, ["Positive", "Negative", "Neutral"])
-        article_sentiment = clf.predict([article['content.cleaned']])[0]
+#         clf = ZeroShotGPTClassifier(model="gpt-3.5-turbo")
+#         clf.fit(None, ["Positive", "Negative", "Neutral"])
+#         article_sentiment = clf.predict([article['paragraph']])[0]
         
-        if article_sentiment == 'Positive':
-            col1.success(f'This article is **{article_sentiment.upper()}** based on the article content.')
-        elif article_sentiment == 'Negative':
-            col1.error(f'This article is **{article_sentiment.upper()}** based on the article content.')
-        elif article_sentiment == 'Neutral':
-            col1.info(f'This article is **{article_sentiment.upper()}** based on the article content.')
+#         if article_sentiment == 'Positive':
+#             col1.success(f'This article is **{article_sentiment.upper()}** based on the article content.')
+#         elif article_sentiment == 'Negative':
+#             col1.error(f'This article is **{article_sentiment.upper()}** based on the article content.')
+#         elif article_sentiment == 'Neutral':
+#             col1.info(f'This article is **{article_sentiment.upper()}** based on the article content.')
 
-        col1.subheader('Full article content')
-        col1.write(article['content.cleaned'])
+#         col1.subheader('Full article content')
+#         col1.write(article['paragraph'])
               
-        col2.caption('**SUGGESTED STORIES**')
-        suggestions = df[df['gpt_sentiment']==article_sentiment].sample(3)
+#         col2.caption('**SUGGESTED STORIES**')
+#         suggestions = df[df['gpt_sentiment']==article_sentiment].sample(3)
         
-        for i, suggestion in suggestions.iterrows():
-            col2.subheader(f"{suggestion['title.cleaned']}")
-            col2.write(f"[Link to the article]({suggestion['link']})")
+#         for i, suggestion in suggestions.iterrows():
+#             col2.subheader(f"{suggestion['title']}")
+#             col2.write(f"[Link to the article]({suggestion['link']})")
 
 elif my_page == 'Keyword extraction':
     st.title('Tagging articles with their most relevant keywords')
-    df = pd.read_csv("data/rappler-2024-cleaned-st.csv").sort_values(
+    df = pd.read_csv("data/investopedia_cleaned.csv").sort_values(
         'date', ascending=False
     )
     
     title = st.selectbox(
-        'Select article title', df['title.cleaned'], index=None
+        'Select article title', df['title'], index=None
     )
     
     if title:
-        article = df[df['title.cleaned']==title].iloc[0]
+        article = df[df['title']==title].iloc[0]
                            
-        st.header(f"[{article['title.cleaned']}]({article['link']})")
+        st.header(f"[{article['title']}]({article['link']})")
         st.caption(f"__Published date:__ {article['date']}")
 
         st.caption('**TOP KEYWORDS**')
-        top_keywords = extract_keywords(article['content.cleaned'])
+        top_keywords = extract_keywords(article['paragraph'])
 
         highlighted_keywords = ""
         for i, keyword in enumerate(top_keywords):
@@ -254,4 +254,4 @@ elif my_page == 'Keyword extraction':
         st.markdown(highlighted_keywords, unsafe_allow_html=True) 
         
         st.subheader('Full article content')
-        st.write(article['content.cleaned'])
+        st.write(article['paragraph'])
