@@ -222,11 +222,11 @@ elif my_page == 'Sentiment-based recommendations':
         col1.write(article['paragraph'])
               
         col2.caption('**SUGGESTED STORIES**')
-        suggestions = df[df['gpt_sentiment']==article_sentiment].sample(3)
+        # suggestions = df[df['gpt_sentiment']==article_sentiment].sample(3)
         
-        for i, suggestion in suggestions.iterrows():
-            col2.subheader(f"{suggestion['title']}")
-            col2.write(f"[Link to the article]({suggestion['link']})")
+        # for i, suggestion in suggestions.iterrows():
+        #     col2.subheader(f"{suggestion['title']}")
+        #     col2.write(f"[Link to the article]({suggestion['link']})")
 
 elif my_page == 'Keyword extraction':
     st.title('Tagging articles with their most relevant keywords')
