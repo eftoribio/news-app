@@ -18,13 +18,13 @@ SKLLMConfig.set_openai_key(api_key)
 ### Helper Functions
 
 def extract_keywords(text):
-    system_prompt = 'You are a news analyst assistant tasked to extract keywords from news articles.'
+    system_prompt = 'You are a financial news analyst assistant tasked to extract keywords related to finance from news articles.'
 
     main_prompt = """
     ###TASK###
-    - Extract the five most crucial keywords from the news article. 
+    - Extract the five most crucial finance-related keywords from the news article. 
     - Extracted keywords must be listed in a comma-separated list. 
-    - Example: digital advancements, human rights, AI, gender, post-pandemic
+    - Example: stock, ETF, bitcoin, mutual funds, bond
 
     ###ARTICLE###
     """
